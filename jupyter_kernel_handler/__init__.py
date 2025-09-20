@@ -142,17 +142,20 @@ def _call_hook(hook, default, *args):
 # --- Cell Content Capture Fix ---
 import ast
 
+
+
 class CellExecutionHook:
     def __init__(self):
         self.ip = get_ipython()
         self.active = False
         self._cell_content = 'No content available'
+        self._allow_execution = True
+        self.blocking_pre_run = False
         # Register AST transformer to capture cell source
         if self.ip is not None:
             self.ip.input_transformers_post.append(self._capture_cell_content)
 
     def _capture_cell_content(self, cell_source):
-        # Store the cell source for hooks
         self._cell_content = cell_source
         if hasattr(self.ip, 'user_ns'):
             self.ip.user_ns['_current_cell_content'] = cell_source
@@ -161,7 +164,16 @@ class CellExecutionHook:
     def pre_execute(self):
         if self.active and hasattr(self.ip, 'user_ns'):
             cell_content = getattr(self.ip.user_ns, '_current_cell_content', self._cell_content)
-            _call_hook(_user_pre_run, default_pre_run, cell_content)
+            # Reset flag before pre_run
+            self._allow_execution = True
+            # If blocking mode is enabled, allow pre_run to block execution
+            result = _call_hook(_user_pre_run, default_pre_run, cell_content)
+            if self.blocking_pre_run:
+                if hasattr(self.ip, 'user_ns') and '_cell_allow_execution' in self.ip.user_ns:
+                    self._allow_execution = self.ip.user_ns['_cell_allow_execution']
+                if not self._allow_execution:
+                    print(f"{Colors.RED}Cell execution blocked by pre_run hook.{Colors.END}")
+                    raise RuntimeError("Cell execution blocked by pre_run hook.")
             output_capture.start_capture()
             self.ip.user_ns['_cell_start_time'] = time.time()
 
@@ -174,8 +186,9 @@ class CellExecutionHook:
             result = getattr(self.ip.user_ns, '_', None)
             _call_hook(_user_post_run, default_post_run, result, execution_time, cell_content)
 
-    def activate(self, debug_mode=False):
+    def activate(self, debug_mode=False, blocking_pre_run=False):
         output_capture.set_debug(debug_mode)
+        self.blocking_pre_run = blocking_pre_run
         if not self.active:
             self.ip.events.register('pre_execute', self.pre_execute)
             self.ip.events.register('post_execute', self.post_execute)
@@ -191,8 +204,8 @@ class CellExecutionHook:
 
 cell_hook = CellExecutionHook()
 
-def activate(debug_mode=False):
-    cell_hook.activate(debug_mode=debug_mode)
+def activate(debug_mode=False, blocking_pre_run=False):
+    cell_hook.activate(debug_mode=debug_mode, blocking_pre_run=blocking_pre_run)
 
 def deactivate():
     cell_hook.deactivate()

@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='jupyter_kernel_handler',
-    version='0.1.3',
+    version='0.1.4',
     description='Jupyter Kernel Handler: Cell Execution Monitor with colored output and custom hooks',
     long_description=long_description,
     long_description_content_type='text/markdown',
