@@ -1,3 +1,31 @@
+Metadata-Version: 2.4
+Name: jupyter_kernel_handler
+Version: 0.1.3
+Summary: Jupyter Kernel Handler: Cell Execution Monitor with colored output and custom hooks
+Home-page: https://github.com/Dataxcelerator/jupyter_kernel_handler
+Author: Dataxcelerator
+Author-email: opensource@dataxcelerator.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipython
+Requires-Dist: jupyter
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 
 # Jupyter Kernel Handler
 
