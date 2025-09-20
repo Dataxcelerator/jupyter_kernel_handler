@@ -1,0 +1,74 @@
+Metadata-Version: 2.4
+Name: jupyter_kernel_handler
+Version: 0.1.4
+Summary: Jupyter Kernel Handler: Cell Execution Monitor with colored output and custom hooks
+Home-page: https://github.com/Dataxcelerator/jupyter_kernel_handler
+Author: Dataxcelerator
+Author-email: opensource@dataxcelerator.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipython
+Requires-Dist: jupyter
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+# Jupyter Kernel Handler
+
+Cell Execution Monitor with colored output and custom hooks for Jupyter notebooks.
+
+## Features
+- Pre-run cell content display (blue)
+- Real-time output (green)
+- Post-run summary (yellow)
+- Custom hooks for pre-run, real-time, and post-run events
+- Debug mode for line-by-line real-time output
+
+
+## Installation
+
+### From PyPI (public release)
+```bash
+pip install jupyter_kernel_handler
+```
+
+### From GitHub (latest code)
+```bash
+pip install git+https://github.com/Dataxcelerator/jupyter_kernel_handler.git
+```
+
+### Using a PyPI API key (for private uploads)
+If you need to install from a private PyPI repository using an API key, use:
+```bash
+pip install --extra-index-url https://__token__:<YOUR_API_KEY>@pypi.org/simple jupyter_kernel_handler
+```
+Replace `<YOUR_API_KEY>` with your actual PyPI token.
+
+## Usage
+```python
+import jupyter_kernel_handler
+jupyter_kernel_handler.set_hooks(pre_run=my_pre, realtime=my_real, post_run=my_post)
+jupyter_kernel_handler.activate(debug_mode=True)
+```
+
+See the notebook `run.ipynb` for a full demo.
+
+## License
+MIT
+
+## Source
+[GitHub Repository](https://github.com/Dataxcelerator/jupyter_kernel_handler.git)
